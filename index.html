@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoLegends - Meme Token</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            background-color: rgba(26, 26, 46, 0.8);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Bangers', cursive;
+            font-size: 2.5em;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-content {
+            z-index: 1;
+        }
+        h1 {
+            font-family: 'Bangers', cursive;
+            font-size: 4em;
+            margin-bottom: 20px;
+            color: #ffd700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #ffd700;
+            color: #1a1a2e;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 10px;
+        }
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        .section {
+            padding: 100px 0;
+        }
+        h2 {
+            font-family: 'Bangers', cursive;
+            font-size: 3em;
+            margin-bottom: 30px;
+            color: #ffd700;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .about-content, .tokenomics-content, .how-to-buy-content, .roadmap-content {
+            background-color: rgba(26, 26, 46, 0.8);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .tokenomics-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .tokenomics-list li {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+        }
+        .tokenomics-list li:before {
+            content: '🚀';
+            margin-right: 10px;
+            font-size: 1.5em;
+        }
+        .logo-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .logo-image {
+            max-width: 200px;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+        }
+        .how-to-buy-steps {
+            counter-reset: step-counter;
+            list-style-type: none;
+            padding: 0;
+        }
+        .how-to-buy-steps li {
+            margin-bottom: 20px;
+            padding-left: 50px;
+            position: relative;
+        }
+        .how-to-buy-steps li:before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: #ffd700;
+            color: #1a1a2e;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .roadmap-phase {
+            background-color: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid #ffd700;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .roadmap-phase:before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            width: 16px;
+            height: 16px;
+            background-color: #ffd700;
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+        footer {
+            background-color: rgba(26, 26, 46, 0.8);
+            padding: 40px 0;
+            text-align: center;
+        }
+        .social-links a {
+            color: #ffffff;
+            font-size: 1.5em;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        .social-links a:hover {
+            color: #ffd700;
+        }
+        .token-address {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        .token-address span {
+            margin-right: 10px;
+        }
+        .token-address i {
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                padding: 100px 0;
+            }
+            h1 {
+                font-size: 3em;
+            }
+            .btn {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <header>
+        <nav class="container">
+            <div class="logo">CryptoLegends</div>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#tokenomics">Tokenomics</a>
+                <a href="#how-to-buy">How to Buy</a>
+                <a href="#roadmap">Roadmap</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>CryptoLegends</h1>
+                <p>Join the legendary crypto adventure!</p>
+                <a href="#" class="btn">Buy Now</a>
+                <a href="#" class="btn">Join Community</a>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="container">
+                <div class="about-content">
+                    <h2>About CryptoLegends</h2>
+                    <p>CryptoLegends is a revolutionary meme token that brings together the excitement of gaming and the potential of cryptocurrency. Our token features legendary characters from gaming history, reimagined with a crypto twist. Join us on this epic quest to conquer the crypto realm!</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tokenomics" class="section">
+            <div class="container">
+                <div class="tokenomics-content">
+                    <h2>TOKENOMICS</h2>
+                    <ul class="tokenomics-list">
+                        <li>Total Supply: 1,000,000,000,000 LEGEND</li>
+                        <li>5% Buy/Sell Tax: 2% to Liquidity, 3% to Marketing</li>
+                        <li>50% of Total Supply Burned at Launch</li>
+                        <li>Anti-Whale Mechanism: Max Wallet 2% of Total Supply</li>
+                    </ul>
+                    <div class="logo-container">
+                        <img src="./logo.png" alt="CryptoLegends logo" class="logo-image">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-to-buy" class="section">
+            <div class="container">
+                <div class="how-to-buy-content">
+                    <h2>HOW TO BUY</h2>
+                    <ol class="how-to-buy-steps">
+                        <li>Get a Wallet - Download a reputable Ethereum wallet like MetaMask or Trust Wallet.</li>
+                        <li>Acquire ETH - Purchase Ethereum (ETH) from a cryptocurrency exchange like Coinbase or Binance.</li>
+                        <li>Connect to a DEX - Connect your wallet to a decentralized exchange (DEX) like Uniswap or SushiSwap.</li>
+                        <li>Swap ETH for LEGEND - Use the DEX's swap feature to exchange your ETH for LEGEND tokens.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="section">
+            <div class="container">
+                <div class="roadmap-content">
+                    <h2>ROADMAP</h2>
+                    <div class="roadmap-phase">
+                        <h3>Phase 1: Launch & Community Building</h3>
+                        <p>We'll launch the token and focus on growing a strong community of CryptoLegends enthusiasts.</p>
+                    </div>
+                    <div class="roadmap-phase">
+                        <h3>Phase 2: Marketing & Partnerships</h3>
+                        <p>We'll ramp up marketing efforts and form strategic partnerships with gaming influencers and platforms.</p>
+                    </div>
+                    <div class="roadmap-phase">
+                        <h3>Phase 3: GameFi Development</h3>
+                        <p>We'll develop play-to-earn games featuring our legendary characters, integrating LEGEND tokens.</p>
+                    </div>
+                    <div class="roadmap-phase">
+                        <h3>Phase 4: Metaverse Expansion</h3>
+                        <p>We'll explore opportunities in the metaverse, creating virtual worlds for our CryptoLegends community.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="#" target="_blank"><i class="fas fa-chart-line"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-telegram"></i></a>
+                <a href="#" target="_blank"><i class="fas fa-search-dollar"></i></a>
+            </div>
+            <div class="token-address">
+                <span>0x1234...5678</span>
+                <i class="fas fa-copy" id="copy-address"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/babel">
+        // React component for animated text
+        const AnimatedText = ({ text }) => {
+            const el = React.useRef(null);
+
+            React.useEffect(() => {
+                const typed = new Typed(el.current, {
+                    strings: [text],
+                    typeSpeed: 50,
+                    backSpeed: 50,
+                    loop: true
+                });
+
+                return () => {
+                    typed.destroy();
+                };
+            }, [text]);
+
+            return <span ref={el} />;
+        };
+
+        // Render the AnimatedText component
+        ReactDOM.render(
+            <AnimatedText text="Join the legendary crypto adventure!" />,
+            document.querySelector('.hero-content p')
+        );
+
+        // Particles.js configuration
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#ffffff"
